@@ -17,13 +17,13 @@ export class ExchangeRateService {
         // Use this method in the resolver.
         let exchangeRates = await this.cacheManager.get<ExchangeRate[]>('exchangeRates');
         if (!exchangeRates || exchangeRates?.length === 0) {
-            console.info('fetched data');
+            // console.info('fetched data');
             exchangeRates = await this.fetchExchangeRates();
             await this.exchangeRateEntityService.updateExchangeRates(exchangeRates);
             await this.cacheManager.set('exchangeRates', exchangeRates, 5 * 60 * 1000);
             await this.cacheManager.set('exchangeRatesCachedAt', Date.now());
         } else {
-            console.info('cached data');
+            // console.info('cached data');
         }
         const cachedAt =
             (await this.cacheManager.get<number>('exchangeRatesCachedAt')) ?? Date.now();
@@ -41,7 +41,7 @@ export class ExchangeRateService {
             ).data.rates;
             return exchangeRates;
         } catch (e) {
-            console.error('Failed on fetching exchange rates', e);
+            // console.error('Failed on fetching exchange rates', e);
             throw new ForbiddenException('Exchange rates are not visible now');
         }
     };
