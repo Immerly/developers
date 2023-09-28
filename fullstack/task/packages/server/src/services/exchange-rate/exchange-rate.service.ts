@@ -36,8 +36,9 @@ export class ExchangeRateService {
 
     public fetchExchangeRates = async () => {
         try {
-            const exchangeRates: ExchangeRate[] = (await axios.get(`${externalConfig.cnbEndpoint}`))
-                .data.rates;
+            const exchangeRates: ExchangeRate[] = (
+                await axios.get(`${externalConfig.cnbEndpoint}?lang=EN`)
+            ).data.rates;
             return exchangeRates;
         } catch (e) {
             console.error('Failed on fetching exchange rates', e);
