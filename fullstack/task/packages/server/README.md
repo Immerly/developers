@@ -2,6 +2,10 @@
 
 Contains the code for the dishboard backend.
 
+## Introduction
+
+Simple web application (NestJS + GraphQL + TypeORM + Redis) to show CZK exchange rates.
+
 ## Installation
 
 Follow these steps for the first-time setup:
