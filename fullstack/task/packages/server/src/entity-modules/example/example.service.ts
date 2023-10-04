@@ -9,7 +9,7 @@ export class ExampleService {
     constructor(
         @InjectRepository(Example)
         private readonly exampleRepository: ExampleRepository
-    ) {}
+    ) { }
 
     public getByName = async (name: string) => {
         const example = await this.exampleRepository.findOne({ where: { name } });

@@ -5,7 +5,7 @@ import { CreateExampleInputType } from './dto';
 
 @Resolver(() => Example)
 export class ExampleResolver {
-    constructor(private readonly propertyService: ExampleService) {}
+    constructor(private readonly propertyService: ExampleService) { }
 
     @Query(() => Example, { nullable: true })
     public async exampleByName(@Args('name') name: string) {
