@@ -1419,6 +1419,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/axios@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nestjs/axios@npm:3.0.0"
+  peerDependencies:
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+    axios: ^1.3.1
+    reflect-metadata: ^0.1.12
+    rxjs: ^6.0.0 || ^7.0.0
+  checksum: 0483ef5a10ed920eb84756472de59b5bd83d09f152de9b769f68a57bd9c2c922961545c50001ac3ea45584cf991aee355b8fef4fe249b849fded4f1df92244f6
+  languageName: node
+  linkType: hard
+
 "@nestjs/cli@npm:9.0.0":
   version: 9.0.0
   resolution: "@nestjs/cli@npm:9.0.0"
@@ -1605,6 +1617,20 @@ __metadata:
     "@nestjs/common": ^9.0.0
     "@nestjs/core": ^9.0.0
   checksum: 6da92591e8c16288e210e577a4a31c433cdcaedfed3ef072be9149e175c1351c29cfeaf4b0adc99a2eb0e3da76e2a9287c7d8a6a8c1c5b22e730f86773b54145
+  languageName: node
+  linkType: hard
+
+"@nestjs/schedule@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@nestjs/schedule@npm:3.0.4"
+  dependencies:
+    cron: 2.4.3
+    uuid: 9.0.1
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
+    reflect-metadata: ^0.1.12
+  checksum: 5dfb877fcb27e672df3e8ee5eff8ffb45edb91828814fb288caf0ba6268a525315deb41b01de34731e434acf9494e80d056c0b753bc3a07123f50ee9990681a4
   languageName: node
   linkType: hard
 
@@ -2301,6 +2327,13 @@ __metadata:
   version: 4.0.2
   resolution: "@types/long@npm:4.0.2"
   checksum: d16cde7240d834cf44ba1eaec49e78ae3180e724cd667052b194a372f350d024cba8dd3f37b0864931683dab09ca935d52f0c4c1687178af5ada9fc85b0635f4
+  languageName: node
+  linkType: hard
+
+"@types/luxon@npm:~3.3.0":
+  version: 3.3.2
+  resolution: "@types/luxon@npm:3.3.2"
+  checksum: b9111132720eae0269538872a5a496b29587ecfc8edc3b0ff7d269aa93a5ff00a131b23d1e9d1f12ec39f2c779ad21bd8d9f90b122c85a182771aabde7f676b8
   languageName: node
   linkType: hard
 
@@ -4377,6 +4410,16 @@ __metadata:
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
   checksum: a9a1503d4390d8b59ad86f4607de7870b39cad43d929813599a23714831e81c520bddf61bcdd1f8e30f05fd3a2b71ae8538e946eb2786dc65c2bbc520f692eff
+  languageName: node
+  linkType: hard
+
+"cron@npm:2.4.3":
+  version: 2.4.3
+  resolution: "cron@npm:2.4.3"
+  dependencies:
+    "@types/luxon": ~3.3.0
+    luxon: ~3.3.0
+  checksum: cb0ad49653b37ba125f8670ca92150ce515493512b1b8a5e08086d22bec9c54dc6d8926fcdb49ea5783f6699862ca5fdc532a440ce33c3228f9b3d565010db2f
   languageName: node
   linkType: hard
 
@@ -8008,6 +8051,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:~3.3.0":
+  version: 3.3.0
+  resolution: "luxon@npm:3.3.0"
+  checksum: 50cf17a0dc155c3dcacbeae8c0b7e80db425e0ba97b9cbdf12a7fc142d841ff1ab1560919f033af46240ed44e2f70c49f76e3422524c7fc8bb8d81ca47c66187
+  languageName: node
+  linkType: hard
+
 "macos-release@npm:^2.5.0":
   version: 2.5.1
   resolution: "macos-release@npm:2.5.1"
@@ -9943,6 +9993,7 @@ __metadata:
     "@dishboard/eslint-config": 1.0.0
     "@dishboard/jest-config": 1.0.0
     "@nestjs/apollo": 10.1.3
+    "@nestjs/axios": ^3.0.0
     "@nestjs/cli": 9.0.0
     "@nestjs/common": 9.3.12
     "@nestjs/config": 2.2.0
@@ -9951,6 +10002,7 @@ __metadata:
     "@nestjs/jwt": 10.0.2
     "@nestjs/passport": 9.0.3
     "@nestjs/platform-express": 9.3.12
+    "@nestjs/schedule": ^3.0.4
     "@nestjs/schematics": 9.0.0
     "@nestjs/testing": 9.0.0
     "@nestjs/typeorm": 9.0.1
@@ -11280,7 +11332,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0.0":
+"uuid@npm:9.0.1, uuid@npm:^9.0.0":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:
