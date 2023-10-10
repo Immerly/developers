@@ -6,7 +6,7 @@ export class createExchangeRateTable1696888267376 implements MigrationInterface 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: 'exchange-rates',
+                name: 'exchange_rates',
                 columns: [
                     {
                         name: 'id',
@@ -40,6 +40,6 @@ export class createExchangeRateTable1696888267376 implements MigrationInterface 
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE "exchange-rates"`);
+        await queryRunner.query(`DROP TABLE exchange_rates`);
     }
 }
