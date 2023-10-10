@@ -20,6 +20,8 @@ docker exec -it dishboard-dev-task-db bash -c "apt-get update && apt-get -y inst
 
 echo "Configuring pg_cron in postgresql.conf..."
 docker exec -it dishboard-dev-task-db bash -c "echo \"shared_preload_libraries = 'pg_cron'\" >> /var/lib/postgresql/data/postgresql.conf"
+docker exec -it dishboard-dev-task-db bash -c "echo \"cron.host = '/tmp'\" >> /var/lib/postgresql/data/postgresql.conf"
+docker exec -it dishboard-dev-task-db bash -c "echo \"cron.database_name = 'dev'\" >> /var/lib/postgresql/data/postgresql.conf"
 
 echo "Restarting PostgreSQL for configuration changes to take effect..."
 docker stop dishboard-dev-task-db
@@ -27,5 +29,5 @@ docker start dishboard-dev-task-db
 
 sleep 10
 
-echo "Setting up pg_cron..."
-docker exec -it dishboard-dev-task-db bash -c "psql -U postgres -c 'CREATE EXTENSION pg_cron;'"
+echo "Setting up pg_cron in the 'dev' database..."
+docker exec -it dishboard-dev-task-db bash -c "psql -U postgres -d dev -c 'CREATE EXTENSION pg_cron;'"
