@@ -1,5 +1,6 @@
-import { Column, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
+@Entity()
 export abstract class Cache {
     @PrimaryColumn('uuid')
     public id!: string;
@@ -9,4 +10,7 @@ export abstract class Cache {
 
     @Column({ type: 'jsonb' })
     public value!: string;
+
+    @Column({ type: 'timestamp' })
+    public inserted_at!: Date;
 }
