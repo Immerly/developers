@@ -10,8 +10,29 @@ docker run \
     -d postgres
 
 echo "Waiting for the database to start..."
-sleep 3
+sleep 15
 
 echo "Creating the database..."
 echo "CREATE DATABASE dev;" | docker exec -i dishboard-dev-task-db psql -U postgres
-echo "\l" | docker exec -i dishboard-dev-task-db psql -U postgres
+
+echo "Installing pg_cron..."
+docker exec -it dishboard-dev-task-db bash -c "apt-get update > /dev/null && apt-get -y install postgresql-16-cron > /dev/null"
+
+echo "Configuring pg_cron in postgresql.conf..."
+docker exec -it dishboard-dev-task-db bash -c "echo \"shared_preload_libraries = 'pg_cron'\" >> /var/lib/postgresql/data/postgresql.conf"
+docker exec -it dishboard-dev-task-db bash -c "echo \"cron.host = ''\" >> /var/lib/postgresql/data/postgresql.conf"
+docker exec -it dishboard-dev-task-db bash -c "echo \"cron.database_name = 'dev'\" >> /var/lib/postgresql/data/postgresql.conf"
+
+echo "Restarting PostgreSQL for configuration changes to take effect..."
+docker stop dishboard-dev-task-db
+docker start dishboard-dev-task-db
+
+sleep 10
+
+echo "Setting up pg_cron in the 'dev' database..."
+docker exec -it dishboard-dev-task-db bash -c "psql -U postgres -d dev -c 'CREATE EXTENSION pg_cron;'"
+
+sleep 5
+
+# echo "Updating cron.job nodename..."
+# docker exec -it dishboard-dev-task-db bash -c "psql -U postgres -d dev -c \"ALTER TABLE cron.job ALTER COLUMN nodename SET DEFAULT '';\""

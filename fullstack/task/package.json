@@ -1,6 +1,6 @@
 {
     "name": "dishboard",
-    "packageManager": "yarn@3.2.3",
+    "packageManager": "yarn@3.6.4",
     "workspaces": [
         "packages/**"
     ],
@@ -20,7 +20,6 @@
         "typescript": "4.7.4"
     },
     "devDependencies": {
-        "@types/node": "18.8.0",
         "nx": "15.5.2",
         "tsconfig-paths": "4.1.0"
     }
