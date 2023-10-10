@@ -7,7 +7,7 @@ export class createCacheTable1696892519418 implements MigrationInterface {
             id serial PRIMARY KEY,
             key text UNIQUE NOT NULL,
             value jsonb,
-            inserted_at timestamp
+            inserted_at timestamp DEFAULT now()
         );
     `);
 
