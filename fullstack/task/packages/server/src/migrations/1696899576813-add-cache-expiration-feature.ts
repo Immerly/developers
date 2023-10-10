@@ -15,13 +15,13 @@ export class addCacheExpirationFeature1696899576813 implements MigrationInterfac
         `);
 
         await queryRunner.query(`
-            SELECT cron.schedule('*/5 * * * *', $$CALL expire_rows('5 minutes');$$);
+            SELECT cron.schedule('* * * * *', $$CALL expire_rows('5 minutes');$$);
         `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            SELECT cron.unschedule('*/5 * * * *', $$CALL expire_rows('5 minutes');$$);
+            SELECT cron.unschedule('* * * * *', $$CALL expire_rows('5 minutes');$$);
         `);
 
         await queryRunner.query(`
