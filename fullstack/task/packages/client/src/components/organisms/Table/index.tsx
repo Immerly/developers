@@ -10,27 +10,27 @@ const columns: TableColumn<IExchangeRate>[] = [
     {
         name: 'Country',
         selector: (row) => row.country,
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'Currency',
         selector: (row) => row.currency,
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'Amount',
         selector: (row) => row.amount,
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'Code',
         selector: (row) => row.code,
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'Exchange Rate',
         selector: (row) => formatter.format(row.exchange_rate),
-        sortable: true,
+        sortable: false,
     },
 ];
 
