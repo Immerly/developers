@@ -30,7 +30,7 @@ export class createExchangeRateTable1696888267376 implements MigrationInterface 
                         type: 'varchar',
                     },
                     {
-                        name: 'exhange_rate',
+                        name: 'exchange_rate',
                         type: 'float4',
                     },
                 ],
