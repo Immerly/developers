@@ -34,6 +34,13 @@
                 "command": "sh ./scripts/db-create.sh"
             }
         },
+        "redis-run": {
+            "executor": "nx:run-commands",
+            "options": {
+                "cwd": "packages/server",
+                "command": "sh ./scripts/redis-run.sh"
+            }
+        },
         "migration": {
             "executor": "nx:run-commands",
             "options": {
