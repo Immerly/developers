@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx run --project server migration -c generate --name exchange-rates",
+    "startTime": "2023-10-23T16:11:18.978Z",
+    "endTime": "2023-10-23T16:11:22.365Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "server:migration:generate",
+      "target": "migration",
+      "projectName": "server",
+      "hash": "2026277719873299329",
+      "startTime": "2023-10-23T16:11:18.981Z",
+      "endTime": "2023-10-23T16:11:22.365Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}

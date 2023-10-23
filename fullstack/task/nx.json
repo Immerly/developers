@@ -78,5 +78,9 @@
                 }
             }
         }
-    }
+    },
+    "affected": {
+        "defaultBase": "main"
+    },
+    "nxCloudAccessToken": "MTM1Nzg5ZDItN2I5NC00YWVhLTk3ZDAtMjRkOGNkYTA4NDlhfHJlYWQtd3JpdGU="
 }
