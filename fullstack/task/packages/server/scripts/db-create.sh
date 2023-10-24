@@ -10,7 +10,7 @@ docker run \
     -d postgres
 
 echo "Waiting for the database to start..."
-sleep 3
+sleep 10
 
 echo "Creating the database..."
 echo "CREATE DATABASE dev;" | docker exec -i dishboard-dev-task-db psql -U postgres
