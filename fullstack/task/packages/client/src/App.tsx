@@ -4,9 +4,9 @@ import { GET_EXCHANGE_RATES } from './gqls';
 import './index.css';
 
 const App = () => {
-    const { loading, error, data } = useQuery(GET_EXCHANGE_RATES);
+    const { loading: isLoading, error, data } = useQuery(GET_EXCHANGE_RATES);
 
-    if (loading) return 'Loading...';
+    if (isLoading) return `Loading`;
     if (error) return `Error! ${error.message}`;
 
     return (

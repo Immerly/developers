@@ -8,6 +8,7 @@ export const GET_EXCHANGE_RATES = gql(`
             order
             country
             currency
+            amount
             currencyCode
             rate
         }
