@@ -1,12 +1,13 @@
 import { GetExchangeRatesQuery } from '../__generated__/graphql';
 import formatDateString from '../common/formatDateString';
+import ErrorBox from './ErrorBox';
 
 interface ExchangeRateTableProps {
     data?: GetExchangeRatesQuery;
 }
 
 const ExchangeRatesTable = ({ data }: ExchangeRateTableProps) => {
-    if (!data?.exchangeRates) return <div>No data!</div>;
+    if (!data?.exchangeRates) return <ErrorBox message="No data!" />;
 
     const lastUpdatedAt = data.exchangeRates[0]
         ? formatDateString(data.exchangeRates[0].createdAtUtc)
