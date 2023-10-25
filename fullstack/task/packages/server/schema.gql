@@ -27,6 +27,7 @@ type ExchangeRate {
   order: Float!
   country: String!
   currency: String!
+  amount: Float!
   currencyCode: String!
   rate: Float!
 }

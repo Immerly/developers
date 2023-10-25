@@ -36,6 +36,7 @@ export type Example = {
 
 export type ExchangeRate = {
   __typename?: 'ExchangeRate';
+  amount: Scalars['Float']['output'];
   country: Scalars['String']['output'];
   createdAtUtc: Scalars['DateTime']['output'];
   currency: Scalars['String']['output'];
