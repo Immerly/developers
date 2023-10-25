@@ -8,16 +8,22 @@ import { ExchangeRate } from '../../entities';
 export class ExchangeRateService {
     constructor(
         @InjectRepository(ExchangeRate) private exchangeRateRepository: Repository<ExchangeRate>
-    ) { }
+    ) {}
 
     public getExchangeRates = async () => {
-        const exchangeRates = await this.fetchExchangeRates();
-        return exchangeRates;
-    };
+        const cachedExchangeRates = await this.exchangeRateRepository.find();
 
-    private async refreshExchangeRates() {
-        // Do stuff
-    }
+        if (cachedExchangeRates.length !== 0) {
+            const databaseTime = new Date(cachedExchangeRates[0].createdAtUtc).getTime();
+            const timeDifference = new Date().getTime() - databaseTime;
+            if (timeDifference <= 5 * 60 * 1000) {
+                return cachedExchangeRates;
+            }
+        }
+        const newData = await this.fetchExchangeRates();
+        await this.exchangeRateRepository.clear();
+        return this.exchangeRateRepository.save(newData);
+    };
 
     private async fetchExchangeRates() {
         const res = await fetch('https://api.cnb.cz/cnbapi/exrates/daily?lang=EN').catch((err) => {
@@ -28,8 +34,7 @@ export class ExchangeRateService {
         const data = await res.json().catch((err) => {
             console.error("Couldn't parse JSON:", err);
         });
-
-        const RawExchangeRate = z.object({
+        const RawExchangeRateSchema = z.object({
             validFor: z.string(),
             order: z.number(),
             country: z.string(),
@@ -39,11 +44,11 @@ export class ExchangeRateService {
             rate: z.number(),
         });
 
-        const RawRatesResponse = z.object({
-            rates: z.array(RawExchangeRate),
+        const RawRatesResponseSchema = z.object({
+            rates: z.array(RawExchangeRateSchema),
         });
 
-        const parsedData = RawRatesResponse.safeParse(data);
+        const parsedData = RawRatesResponseSchema.safeParse(data);
 
         if (!parsedData.success) {
             console.error(parsedData.error);
@@ -51,9 +56,5 @@ export class ExchangeRateService {
         }
 
         return parsedData.data.rates;
-    }
-
-    private async getCachedRates() {
-        // Do stuff
     }
 }
