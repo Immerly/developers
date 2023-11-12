@@ -1,5 +1,7 @@
+import {ExchangeRatesComponent} from "./components/ExchangeRates.Component";
+
 function App() {
-    return <p>TODO</p>;
+    return <ExchangeRatesComponent/>;
 }
 
 export default App;
