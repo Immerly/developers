@@ -11,9 +11,7 @@ export class ExchangeRateService {
     ) {
     }
 
-    public getExchangeRates = async () => {
-        // TODO: Implement the fetching and parsing of the exchange rates.
-        // Use this method in the resolver.
+    private getRatesFromApi = async () => {
         const response = await fetch('https://api.cnb.cz/cnbapi/exrates/daily?date=2019-05-17&lang=EN');
         const data = await response.json();
 
@@ -28,5 +26,30 @@ export class ExchangeRateService {
             exchangeRate.rate = rate.rate;
             return exchangeRate;
         });
+    }
+
+    private async cacheIsValid(): Promise<boolean> {
+        const latestEntry = await this.exchangeRateRepository.find({
+            order: { createdAtUtc: 'DESC' },
+            take: 1
+        });
+        if (!latestEntry) return false;
+
+        const age = new Date().getTime() - latestEntry[0].createdAtUtc.getTime();
+        return age < 5 * 60 * 1000;
+    }
+
+    private async saveRates(rates: ExchangeRate[]) {
+        await this.exchangeRateRepository.delete({});
+        return await this.exchangeRateRepository.save(rates);
+    }
+
+    public getExchangeRates = async () => {
+        if (await this.cacheIsValid()) {
+            return this.exchangeRateRepository.find();
+        } else {
+            const rates = await this.getRatesFromApi();
+            return await this.saveRates(rates);
+        }
     };
 }
