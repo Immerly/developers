@@ -103,6 +103,7 @@ export class GetExchangeRateService implements IGetExchangeRateService {
                                 code: `${rateStr[EBankRateColumnIndex.code]}`,
                                 currency: `${rateStr[EBankRateColumnIndex.currency]}`,
                                 rate,
+                                updatedAt: new Date().toUTCString(),
                             };
                             result.push(parsedRate);
                         }

@@ -8,6 +8,7 @@ type ExchangeRate {
   amount: Float!
   code: String!
   rate: Float!
+  updatedAt: String!
 }
 
 type Query {

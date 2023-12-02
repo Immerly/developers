@@ -1,4 +1,4 @@
-import { DataSource, EntityManager } from 'typeorm';
+import { DataSource, EntityManager, IsNull } from 'typeorm';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -35,21 +35,39 @@ export class CreateExchangeRateService implements ICreateExchangeRateService {
     createExchangeRatesBulk = async (rates: Array<ExchangeRateItem>): Promise<Array<BankRate>> => {
         try {
             return this.dataSource.transaction(async (em: EntityManager) => {
-                await em.delete(BankRate, {});
+                const existedRates = await em.find(BankRate, { where: { deleted_at: IsNull() } });
+                const ratesCodeMap = existedRates.length
+                    ? existedRates.reduce((acc: Map<string, BankRate>, val: BankRate) => {
+                          acc.set(val.code, val);
+                          return acc;
+                      }, new Map<string, BankRate>())
+                    : new Map<string, BankRate>();
                 const newRates: Array<BankRate> = [];
                 // eslint-disable-next-line no-restricted-syntax
                 for (const rate of rates) {
-                    newRates.push(
-                        em.create(BankRate, {
-                            currency: rate.currency,
-                            country: rate.country,
-                            code: rate.code,
-                            rate: rate.rate,
-                            amount: rate.amount,
-                        })
-                    );
+                    const existed = ratesCodeMap.get(rate.code);
+                    const data = {
+                        currency: rate.currency,
+                        country: rate.country,
+                        code: rate.code,
+                        rate: rate.rate,
+                        amount: rate.amount,
+                    };
+                    if (!existed) {
+                        const createdRate = em.create(BankRate, data);
+                        newRates.push(createdRate);
+                    } else {
+                        // eslint-disable-next-line no-await-in-loop
+                        await em.update(BankRate, { id: existed.id }, data);
+                    }
                 }
-                return em.save(newRates);
+                const response: Array<BankRate> = [];
+                if (newRates.length) {
+                    const savedCreatedValues = await em.save(newRates);
+                    this.logger.log(`=== NEW RATES WERE SAVED ===`);
+                    response.concat(savedCreatedValues);
+                }
+                return response;
             });
         } catch (e) {
             this.logger.error(`=== 'createExchangeRatesBulk' FAILED ===`, e);

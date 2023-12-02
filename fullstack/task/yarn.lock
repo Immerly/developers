@@ -1631,7 +1631,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/schedule@npm:^4.0.0":
+"@nestjs/schedule@npm:4.0.0":
   version: 4.0.0
   resolution: "@nestjs/schedule@npm:4.0.0"
   dependencies:
@@ -9999,7 +9999,7 @@ __metadata:
     "@nestjs/jwt": 10.0.2
     "@nestjs/passport": 9.0.3
     "@nestjs/platform-express": 9.3.12
-    "@nestjs/schedule": ^4.0.0
+    "@nestjs/schedule": 4.0.0
     "@nestjs/schematics": 9.0.0
     "@nestjs/testing": 9.0.0
     "@nestjs/typeorm": 9.0.1

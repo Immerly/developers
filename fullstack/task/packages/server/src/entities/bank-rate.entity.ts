@@ -1,22 +1,22 @@
 import {
-    Entity,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    UpdateDateColumn,
+    Entity,
     PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 
 export interface IBankRate {
-    id: number;
+    id?: number;
     country: string;
     currency: string;
     amount: number;
     code: string;
     rate: number;
-    created_at: Date;
-    updated_at: Date;
-    deleted_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
+    deleted_at?: Date;
 }
 
 @Entity('bank_rate')
@@ -24,7 +24,7 @@ export class BankRate implements IBankRate {
     @PrimaryGeneratedColumn('rowid', {
         name: 'id',
     })
-    id!: number;
+    id?: number;
 
     @Column({
         name: 'country',
@@ -67,15 +67,15 @@ export class BankRate implements IBankRate {
     @DeleteDateColumn({
         name: 'deleted_at',
     })
-    deleted_at!: Date;
+    deleted_at?: Date;
 
     @CreateDateColumn({
         name: 'created_at',
     })
-    created_at!: Date;
+    created_at?: Date;
 
     @UpdateDateColumn({
         name: 'updated_at',
     })
-    updated_at!: Date;
+    updated_at?: Date;
 }

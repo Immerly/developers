@@ -1,5 +1,4 @@
 import { ObjectType, Field, Float } from '@nestjs/graphql';
-import { BankRate } from '../../entities/bank-rate.entity';
 
 export interface ExchangeRateItem {
     country: string;
@@ -7,6 +6,7 @@ export interface ExchangeRateItem {
     amount: number;
     code: string;
     rate: number;
+    updatedAt?: string;
 }
 
 @ObjectType('ExchangeRate')
@@ -26,13 +26,17 @@ export class ExchangeRatePayload implements ExchangeRateItem {
     @Field(() => Float, { nullable: false })
     rate!: number;
 
-    constructor(p?: ExchangeRateItem | BankRate) {
+    @Field(() => String, { nullable: false })
+    updatedAt?: string;
+
+    constructor(p?: ExchangeRateItem) {
         if (p) {
             this.amount = p.amount;
             this.code = p.code;
             this.currency = p.currency;
             this.rate = p.rate;
             this.country = p.country;
+            this.updatedAt = p.updatedAt ? p.updatedAt : new Date().toUTCString();
         }
         // eslint-disable-next-line no-constructor-return
         return this;
