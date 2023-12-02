@@ -18,8 +18,10 @@ export const typeormConfig: DataSourceOptions = {
     username,
     password,
     database,
-    synchronize: false,
-    migrationsRun: true,
+    logging: true,
+    synchronize: true,
+    migrationsRun: false,
     migrations: ['dist/migrations/*.js'],
     entities: ['dist/entities/*.entity.js'],
+    ssl: false,
 };
