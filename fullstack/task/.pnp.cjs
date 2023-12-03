@@ -12702,6 +12702,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express", "npm:4.17.13"],\
             ["@types/fluent-ffmpeg", "npm:2.1.24"],\
             ["@types/jest", "npm:28.1.8"],\
+            ["@types/node", "npm:20.10.2"],\
             ["@types/passport-jwt", "npm:3.0.8"],\
             ["@types/supertest", "npm:2.0.11"],\
             ["@types/ws", "npm:8.5.4"],\
