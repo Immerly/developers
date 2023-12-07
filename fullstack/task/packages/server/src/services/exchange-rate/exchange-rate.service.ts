@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { ExchangeRates } from '../../entities/exchange-rates.entity';
 import { CNBService } from '../../providers/cnb/cnb.service';
 import { ExchangeRatesOutput } from './dto/exchange-rate-currency.dto';
@@ -34,7 +34,7 @@ export class ExchangeRateService {
         };
     }
 
-    @Cron('* * * * *')
+    @Cron(CronExpression.EVERY_30_SECONDS)
     private handleCron() {
         const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
 

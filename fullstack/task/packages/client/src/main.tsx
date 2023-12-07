@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import App from './App';
+import App from './components/App';
 
 const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
+    uri: 'http://localhost:4001/graphql',
     cache: new InMemoryCache(),
 });
 
