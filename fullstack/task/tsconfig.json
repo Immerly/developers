@@ -9,7 +9,8 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "useUnknownInCatchVariables": false,
-
+        "noImplicitReturns": true,
+        "strictPropertyInitialization": false,
         "strict": true,
         "skipLibCheck": true,
         "sourceMap": true,
