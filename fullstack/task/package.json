@@ -4,6 +4,9 @@
     "workspaces": [
         "packages/**"
     ],
+    "engines": {
+        "node": ">=18.18.0"
+    },
     "scripts": {
         "server": "yarn nx run --project server",
         "client": "yarn nx run --project client",
