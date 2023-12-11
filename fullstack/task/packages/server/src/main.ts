@@ -12,9 +12,10 @@ async function bootstrap() {
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
     const configService = app.get(ConfigService);
-    const port = configService.get('PORT');
 
-    const host = '0.0.0.0';
+    const port = configService.get('PORT');
+    const host = configService.get('HOST') || '0.0.0.0';
+
     await app.listen(port, host);
 }
 
