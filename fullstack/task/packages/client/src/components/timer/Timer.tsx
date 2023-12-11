@@ -6,9 +6,7 @@ type Props = {
 };
 
 const Timer: React.FC<Props> = ({ cachedMaxTime, handleTimerFinish }: Props) => {
-  const storedTimer = localStorage.getItem('timer');
-  const initialTimer = storedTimer ? parseInt(storedTimer, 10) : cachedMaxTime * 60;
-  const [timer, setTimer] = useState(initialTimer);
+  const [timer, setTimer] = useState(cachedMaxTime * 60);
 
   const resetTimer = useCallback(() => {
     setTimer(cachedMaxTime * 60);
@@ -24,7 +22,7 @@ const Timer: React.FC<Props> = ({ cachedMaxTime, handleTimerFinish }: Props) => 
     let timeoutId;
 
     const updateTimer = () => {
-      setTimer((prevTimer) => {
+      setTimer((prevTimer:number) => {
         if (prevTimer === 0) {
           handleTimerFinish();
           resetTimer();
@@ -36,18 +34,13 @@ const Timer: React.FC<Props> = ({ cachedMaxTime, handleTimerFinish }: Props) => 
 
     timeoutId = setInterval(updateTimer, 1000);
 
-    return () => {
-      clearInterval(timeoutId!);
-      localStorage.setItem('timer', timer.toString());
-    };
-  }, [cachedMaxTime, handleTimerFinish, resetTimer, timer]);
+    return () => clearInterval(timeoutId!);
+  }, [cachedMaxTime, handleTimerFinish, resetTimer]);
 
-  return (
-    <div className="float-right w-6/12 text-2xl flex flex-col justify-center items-center h-screen ">
-      <p>Update after: </p>
-      {formatTime(timer)}
-    </div>
-  );
+  return <>
+    <p>Update after: </p>
+    {formatTime(timer)}
+  </>;
 };
 
 export default Timer;
