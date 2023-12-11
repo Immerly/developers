@@ -9,7 +9,14 @@ import { modules } from './entity-modules';
 
 @Module({
     imports: [
-        ConfigModule.forRoot(joiConfig),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            ...joiConfig,
+            validationOptions: {
+                allowUnknown: true,
+                abortEarly: true,
+            },
+        }),
         TypeOrmModule.forRoot(typeormConfig),
         GraphQLModule.forRoot(graphqlConfig),
         ExchangeRateModule,
