@@ -2,6 +2,29 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Currency {
+  id: ID!
+  createdAtUtc: DateTime!
+  updatedAtUtc: DateTime
+  deleteDateUtc: DateTime
+  version: Int!
+  countryName: String!
+  currencyName: String!
+  currencyCode: String!
+  amount: Int!
+  rate: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ExchangeRatesDto {
+  currencies: [Currency!]!
+  lastFetchedDate: DateTime!
+}
+
 type Example {
   id: ID!
   createdAtUtc: DateTime!
@@ -12,13 +35,8 @@ type Example {
   value: String!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Query {
-  exchangeRates: String!
+  exchangeRates: ExchangeRatesDto!
   exampleByName(name: String!): Example
 }
 

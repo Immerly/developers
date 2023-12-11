@@ -3,9 +3,13 @@ import * as constants from './constants';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
-import { CurrencyBare } from '../../entities/currency.entity';
+import { Currency, CurrencyBare } from '../../entities/currency.entity';
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ExchangeRateMetadata } from '../../entities/exchange-rate-metadata.entity';
+import { ExchangeRatesDto } from './dto';
 
 @Injectable()
 export class ExchangeRateService {
@@ -14,7 +18,13 @@ export class ExchangeRateService {
         HttpStatus.INTERNAL_SERVER_ERROR
     );
 
-    constructor(private readonly configService: ConfigService) {}
+    constructor(
+        private readonly configService: ConfigService,
+        @InjectRepository(Currency)
+        private currencyRepository: Repository<Currency>,
+        @InjectRepository(ExchangeRateMetadata)
+        private metadataRepository: Repository<ExchangeRateMetadata>
+    ) {}
 
     private fetchBankPageHTML = async (): Promise<string> => {
         const bankURL = this.configService.get<string>('EXCHANGE_RATE_BANK_URL');
@@ -43,14 +53,47 @@ export class ExchangeRateService {
         return currencies;
     };
 
-    public getExchangeRates = async () => {
-        // TODO: Implement the fetching and parsing of the exchange rates.
-        // Use this method in the resolver.
+    private isCurrencyDataUpToDate = (metadata: ExchangeRateMetadata | undefined): boolean => {
+        if (!metadata?.lastFetchedDate) {
+            return false;
+        }
+        const lifetime = this.configService.get<number>('EXCHANGE_RATE_LIFETIME_MS');
+        return Date.now() - new Date(metadata?.lastFetchedDate).getTime() < lifetime!;
+    };
 
-        const html = await this.fetchBankPageHTML();
-        const curr = this.parseBankPageHTML(html);
+    private updateLastFetchedMetadata = async (newDate: Date): Promise<void> => {
+        const metadataArray = await this.metadataRepository.find();
+        const metadata = metadataArray?.[0];
+        await this.metadataRepository.upsert(
+            [
+                {
+                    ...metadata,
+                    lastFetchedDate: newDate,
+                },
+            ],
+            ['id']
+        );
+    };
 
-        return [];
+    public getExchangeRates = async (): Promise<ExchangeRatesDto> => {
+        const metadata = (await this.metadataRepository.find())?.[0];
+        let lastFetchedDate = metadata?.lastFetchedDate;
+
+        if (!this.isCurrencyDataUpToDate(metadata)) {
+            lastFetchedDate = new Date();
+            const html = await this.fetchBankPageHTML();
+            const pageCurrencies = this.parseBankPageHTML(html);
+
+            await this.currencyRepository.upsert(pageCurrencies, ['currencyCode']);
+            await this.updateLastFetchedMetadata(lastFetchedDate);
+        }
+
+        const dbCurrencies = await this.currencyRepository.find();
+
+        return {
+            currencies: dbCurrencies,
+            lastFetchedDate: lastFetchedDate!,
+        };
     };
 
     private isBankRowValid = (row: Element): boolean => {
@@ -65,10 +108,10 @@ export class ExchangeRateService {
         if (!cells[0].childNodes?.[0]?.textContent) {
             return false;
         }
-        if (Number.isNaN(Number(cells[2].textContent!))) {
+        if (Number.isNaN(Number(cells[2].textContent))) {
             return false;
         }
-        if (Number.isNaN(Number(cells[4].textContent!))) {
+        if (Number.isNaN(Number(cells[4].textContent))) {
             return false;
         }
 
