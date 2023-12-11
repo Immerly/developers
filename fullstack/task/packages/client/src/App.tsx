@@ -1,5 +1,7 @@
+import CurrencyTable from './currency-table/CurrencyTable';
+
 function App() {
-    return <p>TODO</p>;
+    return <CurrencyTable />;
 }
 
 export default App;
