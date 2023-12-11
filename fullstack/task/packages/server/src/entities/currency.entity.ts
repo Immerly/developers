@@ -38,3 +38,5 @@ export class Currency extends EntityWithMeta {
     @Column({ type: 'decimal' })
     public rate!: number;
 }
+
+export type CurrencyBare = Omit<Currency, keyof EntityWithMeta>;
