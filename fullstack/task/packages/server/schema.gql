@@ -6,8 +6,6 @@ type Example {
   id: ID!
   createdAtUtc: DateTime!
   updatedAtUtc: DateTime
-  deleteDateUtc: DateTime
-  version: Int!
   name: String!
   value: String!
 }
@@ -17,8 +15,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type ExchangeRateStructure {
+  validFor: String!
+  order: Float!
+  country: String!
+  currency: String!
+  amount: Float!
+  currencyCode: String!
+  rate: Float!
+}
+
+type ExchangeRateUserResponse {
+  currencyList: [ExchangeRateStructure!]!
+  cachedMaxTime: Float!
+}
+
 type Query {
-  exchangeRates: String!
+  exchangeRates(lang: String): ExchangeRateUserResponse!
   exampleByName(name: String!): Example
 }
 
