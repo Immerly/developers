@@ -1,14 +1,12 @@
-import * as constants from './constants';
-
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-
 import { ConfigService } from '@nestjs/config';
-import { Currency, CurrencyBare } from '../../entities/currency.entity';
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Currency, CurrencyBare } from '../../entities/currency.entity';
 import { ExchangeRateMetadata } from '../../entities/exchange-rate-metadata.entity';
+import * as constants from './constants';
 import { ExchangeRatesDto } from './dto';
 
 @Injectable()
