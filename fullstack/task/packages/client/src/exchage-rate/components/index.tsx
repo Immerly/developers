@@ -26,7 +26,7 @@ function ExchangeRates() {
     }
 
     return (
-        <div>
+        <>
             <Typography variant="h3">
                 Exchange Rates
             </Typography>
@@ -34,7 +34,7 @@ function ExchangeRates() {
                 Last Updated: {lastUpdated}
             </Typography>
             <ExchangeRateTable rates={data.exchangeRates}  />
-        </div>
+        </>
     );
 }
 
