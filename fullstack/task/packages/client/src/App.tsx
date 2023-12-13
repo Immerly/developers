@@ -1,5 +1,10 @@
+import React from 'react';
+import ExchangeRates from 'src/exchage-rate/components';
+
 function App() {
-    return <p>TODO</p>;
+    return (
+        <ExchangeRates />
+    );
 }
 
 export default App;
