@@ -13,7 +13,7 @@ const GET_RATES = gql`
     }
 `;
 
-function Rates() {
+function App() {
     const { loading, error, data } = useQuery(GET_RATES);
 
     if (loading) return <p>Loading...</p>;
@@ -63,15 +63,6 @@ function Rates() {
                     )}
                 </tbody>
             </table>
-        </>
-    );
-}
-
-function App() {
-    return (
-        <>
-            <p>TODO</p>
-            <Rates />
         </>
     );
 }
