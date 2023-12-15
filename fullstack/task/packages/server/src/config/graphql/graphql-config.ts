@@ -23,6 +23,10 @@ export const graphqlConfig: ApolloDriverConfig = {
             },
         },
     },
+    cors: {
+        credentials: true,
+        origin: "*",
+    },
     cache: 'bounded',
     autoSchemaFile: 'schema.gql',
     debug: debug === 'true',
