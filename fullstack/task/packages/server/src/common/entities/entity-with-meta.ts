@@ -18,8 +18,8 @@ export abstract class EntityWithMeta {
     public createdAtUtc!: Date;
 
     @Field(() => Date, { nullable: true })
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    public updatedAtUtc?: Date;
+    @UpdateDateColumn({ type: 'timestamptz'})
+    public updatedAtUtc!: Date;
 
     @Field(() => Date, { nullable: true })
     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
