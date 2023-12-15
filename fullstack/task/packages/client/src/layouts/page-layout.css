@@ -1,0 +1,11 @@
+.page-layout {
+    display: flex;
+    justify-content: center;
+
+    height: 100vh;
+}
+
+.centered-content {
+    text-align: center;
+    width: 100%
+}
