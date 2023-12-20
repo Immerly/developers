@@ -5,19 +5,18 @@ import './exchangeRates.css';
 const GET_EXCHANGE_RATES = gql`
     query {
         exchangeRates {
-            rates {
-                country
-                code
-                currency
-                amount
-                rate
-            }
-            lastFetchTimestamp
+            lastUpdated
+            code
+            country
+            rate
+            amount
+            currency
         }
     }
 `;
 
 type ExchangeRate = {
+    lastUpdated: string;
     country: string;
     code: string;
     currency: string;
@@ -25,13 +24,8 @@ type ExchangeRate = {
     rate: string;
 };
 
-type ExchangeRateData = {
-    rates: ExchangeRate[];
-    lastFetchTimestamp: Date;
-};
-
 interface ExchangeRateQueryData {
-    exchangeRates: ExchangeRateData;
+    exchangeRates: ExchangeRate[];
 }
 
 const ExchangeRates = () => {
@@ -41,8 +35,8 @@ const ExchangeRates = () => {
     if (error) return <p>Error : {error.message}</p>;
 
     let time;
-    if (data?.exchangeRates.lastFetchTimestamp) {
-        time = new Date(data.exchangeRates.lastFetchTimestamp).toLocaleTimeString();
+    if (data?.exchangeRates) {
+        time = new Date(data.exchangeRates[0].lastUpdated).toLocaleTimeString();
     }
 
     return (
@@ -62,7 +56,7 @@ const ExchangeRates = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.exchangeRates.rates.map((rate: ExchangeRate) => (
+                    {data?.exchangeRates.map((rate: ExchangeRate) => (
                         <tr key={rate.country}>
                             <td>{rate.country}</td>
                             <td>{rate.code}</td>

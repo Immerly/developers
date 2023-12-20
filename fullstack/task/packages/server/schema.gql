@@ -23,15 +23,11 @@ type ExchangeRate {
   currency: String!
   amount: Float!
   rate: String!
-}
-
-type ExchangeRateData {
-  rates: [ExchangeRate!]!
-  lastFetchTimestamp: DateTime
+  lastUpdated: DateTime!
 }
 
 type Query {
-  exchangeRates: ExchangeRateData!
+  exchangeRates: [ExchangeRate!]!
   exampleByName(name: String!): Example
 }
 

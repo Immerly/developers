@@ -1,49 +1,63 @@
-import { BadRequestException, CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { Cache } from 'cache-manager';
-import { ExchangeRateData } from './dto/exchange-rate-data.model';
-import { ExchangeRate } from './dto/exchange-rate.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ExchangeRateRepository } from './exchange-rate.repository';
+import { ExchangeRate } from 'src/entities/exchange-rate.entity';
 
 @Injectable()
 export class ExchangeRateService {
     private readonly CNB_URL = process.env.CNB_EXCHANGE_RATES_URL ?? '';
 
-    private readonly cacheKey = 'exchangeRates';
-    private lastFetchTimestamp: Date | null = null;
-
     constructor(
         private httpService: HttpService,
-        @Inject(CACHE_MANAGER) private cacheManager: Cache
+        @InjectRepository(ExchangeRate)
+        private exchangeRateRepository: ExchangeRateRepository
     ) {}
 
-    public getExchangeRates = async (): Promise<ExchangeRateData> => {
-        const cachedData = await this.cacheManager.get(this.cacheKey);
-        if (cachedData) {
-            return cachedData as ExchangeRateData;
+    public getExchangeRates = async (): Promise<ExchangeRate[]> => {
+        // Check for cached data
+        const latestCache = await this.exchangeRateRepository.find();
+
+        // Check if cache is older than 5 minutes
+        const fiveMinutes = 300000;
+        const currentTime = new Date().getTime();
+        if (
+            latestCache.length > 0 &&
+            currentTime - latestCache[0].lastUpdated.getTime() < fiveMinutes
+        ) {
+            return latestCache;
         }
 
         try {
-            // Fetching exchange rates
-            const response = await firstValueFrom(
-                this.httpService.get(this.CNB_URL, { responseType: 'text' })
-            );
+            const updatedCache = await this.fetchAndUpdateRates();
 
-            // Transforming exchange rates
-            const rates: ExchangeRate[] = this.parseExchangeRates(response.data);
-            this.lastFetchTimestamp = new Date();
-
-            // Updating cache
-            this.cacheManager.set(this.cacheKey, {
-                rates,
-                lastFetchTimestamp: this.lastFetchTimestamp,
-            });
-
-            return { rates, lastFetchTimestamp: this.lastFetchTimestamp };
+            return updatedCache;
         } catch (error) {
             throw new BadRequestException(error);
         }
     };
+
+    private async fetchAndUpdateRates(): Promise<ExchangeRate[]> {
+        // Fetch results from CNB website
+        const response = await firstValueFrom(
+            this.httpService.get(this.CNB_URL, { responseType: 'text' })
+        );
+
+        // Parse rates
+        const rates: Omit<ExchangeRate, 'id' | 'lastUpdated'>[] = this.parseExchangeRates(
+            response.data
+        );
+        const dateUpdated = new Date();
+
+        // Save rates to database
+        await this.exchangeRateRepository.clear(); // Clear old rates
+        const updatedRates = await this.exchangeRateRepository.save(
+            rates.map((rate) => ({ ...rate, lastUpdated: dateUpdated }))
+        );
+
+        return updatedRates;
+    }
 
     // Parser to parse exchange rate text data from CNB
     private parseExchangeRates(data: string) {
